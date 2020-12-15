@@ -60,8 +60,8 @@ class ParticleFilter {
   /**
    * dataAssociation Finds which observations correspond to which landmarks 
    *   (likely by using a nearest-neighbors data association).
-   * @param predicted Vector of predicted landmark observations
-   * @param observations Vector of landmark observations
+   * @param predicted Vector of predicted landmark observations  (==map landmarks within sensor range)
+   * @param observations Vector of landmark observations( == measurements from e.g. lidar)
    */
   void dataAssociation(std::vector<LandmarkObs> predicted, 
                        std::vector<LandmarkObs>& observations);
@@ -119,7 +119,28 @@ class ParticleFilter {
   bool is_initialized;
   
   // Vector of weights of all particles
-  std::vector<double> weights; 
+  std::vector<double> weights;
+    
+    /**
+     Calculate map coordinate of observation using: map coords of a particle; and car coordinates of the observation to convert
+     x_observation x coord in car coordinates
+     y_observation y coord in car coordinates
+     x_particle x coord of particle in map coordinates
+     y_particle y coord of particle in map coordinates
+     theta heading of particle
+     */
+    double* car2map(double x_observation, double y_observation, double x_particle, double y_particle, double theta);
+    
+    /**
+     Calculate probability for observation coords (given observation coords and real coords; and std for probability distribution)
+     x_observation x coord of landmark coming fomr measurement (converted to map coordinates)
+     y_observation y coord of landmark coming fomr measurement (converted to map coordinates)
+     x_actual actual x position of the landmark
+     y_actual actual y position of the landmark
+     std_x standard deviation in measurement of x coord
+     std_y standard deviation in measurement of y coord
+     */
+    double multiv_prob(double x_observation, double y_observation, double x_actual, double y_actual, double std_x, double std_y);
 };
 
 #endif  // PARTICLE_FILTER_H_

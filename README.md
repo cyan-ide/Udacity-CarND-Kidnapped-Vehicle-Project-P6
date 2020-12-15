@@ -1,3 +1,44 @@
+# **Kidnapped Vehicle** 
+
+## Udacity Project 6 Writeup
+
+---
+
+**Kidnapped Vehicle Project**
+
+The goals / steps of this project are the following:
+* Implement vehicle localization using particle filter
+* Assure accuracy and execution time requirements (as verified by simulator)
+
+---
+
+**Summary:** Similar as Kalman Filters this project was about filling out existing project template with missing parts of the algorithm. The key challenge was in sticking all pieces of code introduced during the class together and assuring that all calculations are done bug free and in proper order. As most numerical methods, Particle Filter easily fails due even small miscalcilations, issues with variable precision etc. (e.g. common problem was weights quickly converging to zero due to too big differences of particle landmark observations vs. real landmark positions - located in the exponent of the multi-variate distribution at the end of the weight update step). Among more trivial issues, turns out the simulator itself is quite resource hungry, therefore running it on the same machine as the Particle Filter algorithm can easily cause the algorithm to fail execution time requirement - I found this a bit troublesome and biased solution for testing algorithm performance (I found out that on MacOS one way to mitigate this issue to certain extent is simply: 1) decreasing simulator resolution; 2) running the simulator and hiding its window in background makes it consume less CPU resouces). 
+
+[//]: # (Image References)
+
+[image_1]: ./images/final_version.png "Final Result"
+
+**The final result for my implementation of the Particle Algorithm was position error x = 0.148, y = 0.132; yaw rate error 0.005. The track was completed 49.74s.** (note that the algorithm uses random noise and probability distribution to select best particiles, therefore exact results can very between one execution and another; likewise executiuon time will depend on equipment and CPU load).
+
+![alt text][image_1]
+
+---
+
+**Key files:**
+* src/particle_filter.cpp - file containing all Particle Filter algorithm functions
+* README.md - (this file) - writeup on project coding, challenges and possible improvements
+
+Additional files:
+* clean.sh, build.sh, run.sh - scripts used for cleaning, compilation, running the project
+* install-\*.sh - installation scripts for web sockets library for C (used to communicate between Kalman fitler logic and simulator used to visualise/test)
+* src/* - source code files provided by udacity that wrap around the Particule Filter algorithm to feed it data from \data dir and communicate with the simulator
+* data/* - data including sensor measurements based on which Particle Filter calculates localization of the car
+
+Additional resources:
+* Udacity simulator - complimentary to this project, necessary to test it - https://github.com/udacity/self-driving-car-sim/releases
+
+---
+
 # Overview
 This repository contains all the code needed to complete the final project for the Localization course in Udacity's Self-Driving Car Nanodegree.
 
